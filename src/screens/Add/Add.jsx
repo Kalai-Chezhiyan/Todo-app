@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Apps, Attach, Cancel, FontType, Search } from "../../assets/Assets";
 import { useNavigate } from "react-router-dom";
 import { formatTimestampForInput } from "../../utils/constants";
+import Button from "../../components/Button/Button";
+import Input from "../../components/Input/Input";
 
 export default function Add(props) {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ export default function Add(props) {
     title: "",
     timestamp: +new Date(),
     detail: "",
+    assignee: "",
     category: [],
     status: "onGoing",
   });
@@ -21,36 +24,44 @@ export default function Add(props) {
     "Office Time",
     "User Experiance",
   ];
+  const startOfToday = new Date().setHours(0, 0, 0, 0);
+  const isAllFilled =
+    value.title.trim() !== "" &&
+    value.timestamp >= startOfToday &&
+    value.detail.trim() !== "" &&
+    value.assignee.trim() !== "";
+  console.log(isAllFilled, "isAllFilled");
+  const handleChange = (e) => {
+    setValue((pre) => {
+      if (e.target.name === "timestamp") {
+        const dateString = e.target.value; // e.g., "2026-10-30"
 
+        // Convert to milliseconds timestamp
+        const msTimestamp = new Date(dateString).getTime();
+        return { ...pre, [e.target.name]: msTimestamp };
+      } else {
+        return { ...pre, [e.target.name]: e.target.value };
+      }
+    });
+  };
   return (
     <form
       className="p-5 w-full h-full flex flex-col justify-between"
       onSubmit={(e) => {
         if (e) e.preventDefault();
         console.log(value, "value");
-
+        if (!isAllFilled) return;
         props.setTasks((pre) => [...pre, value]);
 
         setValue({
           title: "",
           timestamp: +new Date(),
           detail: "",
+          assignee: "",
           category: [],
           status: "onGoing",
         });
-      }}
-      onChange={(e) => {
-        setValue((pre) => {
-          if (e.target.name === "timestamp") {
-            const dateString = e.target.value; // e.g., "2026-10-30"
-
-            // Convert to milliseconds timestamp
-            const msTimestamp = new Date(dateString).getTime();
-            return { ...pre, [e.target.name]: msTimestamp };
-          } else {
-            return { ...pre, [e.target.name]: e.target.value };
-          }
-        });
+        navigate("/");
       }}
     >
       <div className="">
@@ -68,42 +79,48 @@ export default function Add(props) {
         <div className=" text-2xl font-bold py-2.5">New Tasks</div>
         <div className="w-full py-2">
           <div>
-            <input
+            <Input
               name="title"
               type="text"
               placeholder="Task Title"
-              className="border border-black border-b-8 border-b-black rounded-2xl w-full h-15 px-3"
               value={value.title}
+              onChange={handleChange}
+              required={true}
             />
           </div>
           <div className="pt-8">
-            <input
+            <Input
               name="timestamp"
-              type="Date"
-              placeholder="timestamp"
-              className="border border-black border-b-8 border-b-black rounded-2xl w-full h-15 px-3"
+              type="date"
+              placeholder="Date"
               value={formatTimestampForInput(value.timestamp)}
+              onChange={handleChange}
+              required={true}
             />
           </div>
           <div className="flex pt-8  relative ">
-            <input
+            <Input
               name="assignee"
               type="text"
               placeholder="Assignee"
-              className="border border-black border-b-8 border-b-black rounded-2xl w-full h-15 px-3"
               value={value.assignee}
+              onChange={handleChange}
+              required={true}
             />
+
             <div className="py-3 absolute right-3 top-[40%] ">
               <Search width="20px" height="20px" />
             </div>
           </div>
           <div className="pt-8">
-            <input
+            <Input
               name="detail"
               type="text"
               placeholder="Task Detail"
-              className="border border-black border-b-8 border-b-black rounded-2xl w-full h-30 px-3 focus:outline-none"
+              height="h-30"
               value={value.detail}
+              onChange={handleChange}
+              required
             />
           </div>
         </div>
@@ -161,12 +178,7 @@ export default function Add(props) {
 
       <div className="">
         <div className="py-2">
-          <button
-            type="submit"
-            className=" bg-red-400 text-white w-full h-13 rounded-2xl "
-          >
-            CREATE TASK
-          </button>
+          <Button label="CREATE TASK" type="submit" disabled={!isAllFilled} />
         </div>
       </div>
     </form>

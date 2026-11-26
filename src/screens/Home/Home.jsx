@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Add,
   CancelList,
@@ -6,13 +7,12 @@ import {
   Clock,
   Complete,
   OnGoing,
-
+  TaskImage,
 } from "../../assets/Assets";
-import { formatTimestampForInput } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
+import EventCard, { TaskCard } from "../../components/Card/Card";
 
 export default function Home(props) {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const status = [
     {
       icon: <OnGoing width="23px" height="23px" />,
@@ -43,6 +43,9 @@ export default function Home(props) {
       count: props.tasks.filter((data) => data.status === "canceled").length,
     },
   ];
+  const handleEdit = (data, i) => {
+    navigate("/edit", { state: { data, i } });
+  };
   console.log(props.tasks, "props.tasks");
   return (
     <div className="w-full h-full p-5 py-8">
@@ -54,52 +57,47 @@ export default function Home(props) {
               Your Daily Adventure Starts Now
             </div>
           </div>
-          <div className="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-lg"
-           onClick={() => navigate("/add")}>
+          <div
+            className="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-lg"
+            onClick={() => navigate("/add")}
+          >
             <Add />
           </div>
         </div>
         <div className="w-full grid grid-flow-col grid-rows-2 gap-4 py-4 items-center ">
           {status.map((d, i) => (
-            <div
+            <EventCard
               key={i}
-              className={`w-full h-18 rounded-2xl ${d.color} text-black font-bold text-[16px] flex items-center p-3 font-serif`}
-            >
-              <div
-                className={`rounded-4xl bg-blend-darken ${d.colorI} w-10 h-10 top-4 left-3 flex items-center justify-center`}
-              >
-                {d.icon}
-              </div>
-              <div className="ml-3">
-                <div>{d.title}</div>
-                <div className="text-sm text-gray-600  ">{d.count}</div>
-              </div>
-            </div>
+              icon={d.icon}
+              title={d.title}
+              color={d.color}
+              colorI={d.colorI}
+              count={d.count}
+            />
           ))}
         </div>
         <div>
           <div className=" font-serif py-5">Recent Task</div>
-          <div className="flex flex-col  gap-4">
-            {props.tasks.map((data, i) => (
-              <div
-                key={i}
-                className="border border-black border-b-8 border-b-black rounded-2xl w-full  p-3 flex justify-between items-center"
-              >
-                <div>
-                  <div className="font-serif font-bold text-2xl ">
-                    {data.title}
-                  </div>
-                  <div className="text-sm text-gray-500">{data.detail}</div>
-                  <div className="font-bold">
-                    {formatTimestampForInput(data.timestamp)}
-                  </div>
-                </div>
-                <div className=" " onClick={() => props.onCompleteTask(i)}>
-                  {data.status === "onGoing" ? <Circle /> : <CircleCheck />}
-                </div>
-              </div>
-            ))}
-          </div>
+          {props.tasks.length === 0 ? (
+            <div className="flex justify-center items-center px-5">
+              <TaskImage />
+            </div>
+          ) : (
+            <div className="flex flex-col  gap-4">
+              {props.tasks.map((data, i) => (
+                <TaskCard
+                  key={i}
+                  data={data}
+                  select={
+                    data.status === "onGoing" ? <Circle /> : <CircleCheck />
+                  }
+                  onCompleteTask={() => props.onCompleteTask(i)}
+                  onDeleteTask={() => props.onDeleteTask(i)}
+                  onEditTask={() => handleEdit(data, i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -2,9 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import Add from "./screens/Add/Add.jsx";
 import Home from "./screens/Home/Home.jsx";
 import { useEffect, useState } from "react";
+import Edit from "./screens/Edit/Edit.jsx";
 
 function App() {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("tasks")).length>0?JSON.parse(localStorage.getItem("tasks")):[]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")).length > 0
+      ? JSON.parse(localStorage.getItem("tasks"))
+      : [],
+  );
   console.log(tasks, "tasks");
 
   const handleCompleteTask = (clickedIndex) => {
@@ -19,20 +24,33 @@ function App() {
       ),
     );
   };
-useEffect(() => {
-  console.log("started")
-localStorage.setItem("tasks", JSON.stringify(tasks));
-  console.log("ended")
- 
-}, [tasks])
+  const handleDelete = (indexToDelete) => {
+    setTasks((pre) => pre.filter((_, index) => index !== indexToDelete));
+  };
+
+  useEffect(() => {
+    console.log("started");
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log("ended");
+  }, [tasks]);
 
   return (
     <Routes>
       <Route
         path="/"
-        element={<Home tasks={tasks} onCompleteTask={handleCompleteTask} />}
+        element={
+          <Home
+            tasks={tasks}
+            onCompleteTask={handleCompleteTask}
+            onDeleteTask={handleDelete}
+          />
+        }
       />
       <Route path="/add" element={<Add tasks={tasks} setTasks={setTasks} />} />
+      <Route
+        path="/edit"
+        element={<Edit tasks={tasks} setTasks={setTasks} />}
+      />
     </Routes>
   );
 }
