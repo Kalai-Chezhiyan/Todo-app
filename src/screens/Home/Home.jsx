@@ -53,7 +53,7 @@ export default function Home(props) {
         <div className="flex justify-between">
           <div>
             <div className="text-4xl font-serif">Hi,User👋</div>
-            <div className="text-sm text-gray-500  font-serif">
+            <div className="text-16 text-gray-500  font-serif">
               Your Daily Adventure Starts Now
             </div>
           </div>
@@ -79,8 +79,16 @@ export default function Home(props) {
         <div>
           <div className=" font-serif py-5">Recent Task</div>
           {props.tasks.length === 0 ? (
-            <div className="flex justify-center items-center px-5">
+            <div className=" flex flex-col justify-center items-center px-5 py-15 font-serif">
               <TaskImage />
+              <div
+                className="underline"
+                onClick={() => {
+                  navigate("/add");
+                }}
+              >
+                click to add Task ⬇️
+              </div>{" "}
             </div>
           ) : (
             <div className="flex flex-col  gap-4">

@@ -22,11 +22,8 @@ export default function EventCard(props) {
 export const TaskCard = (props) => {
   return (
     <div className="border border-black border-b-8 border-b-black rounded-2xl w-full  p-3 flex justify-between items-center">
-      <div>
-        <div
-          className="font-serif font-bold text-2xl capitalize"
-          onClick={props.onEditTask}
-        >
+      <div onClick={props.onEditTask}>
+        <div className="font-serif font-bold text-2xl capitalize">
           {props.data.title}
         </div>
         <div className="text-sm text-gray-500">{props.data.detail}</div>

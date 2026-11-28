@@ -4,7 +4,7 @@ export default function Input(props) {
       name={props.name}
       type={props.type}
       placeholder={props.placeholder}
-      className={`border border-black border-b-8 border-b-black rounded-2xl w-full ${props.height ? props.height : "h-15"} px-3`}
+      className={`border border-black border-b-8 border-b-black rounded-2xl w-full capitalize ${props.height ? props.height : "h-15"} px-3`}
       value={props.value}
       onChange={props.onChange}
       required={props.required}

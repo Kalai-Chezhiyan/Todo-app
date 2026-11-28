@@ -3,6 +3,8 @@ import Add from "./screens/Add/Add.jsx";
 import Home from "./screens/Home/Home.jsx";
 import { useEffect, useState } from "react";
 import Edit from "./screens/Edit/Edit.jsx";
+import Login from "./screens/Login/Login.jsx";
+import SIgnIn from "./screens/SignIn/SIgnIn.jsx";
 
 function App() {
   const [tasks, setTasks] = useState(
@@ -51,6 +53,8 @@ function App() {
         path="/edit"
         element={<Edit tasks={tasks} setTasks={setTasks} />}
       />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signIn" element={<SIgnIn />} />
     </Routes>
   );
 }

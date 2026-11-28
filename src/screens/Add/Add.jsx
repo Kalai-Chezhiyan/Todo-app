@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Apps, Attach, Cancel, FontType, Search } from "../../assets/Assets";
 import { useNavigate } from "react-router-dom";
-import { formatTimestampForInput } from "../../utils/constants";
+import { Cancel } from "../../assets/Assets";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import { formatTimestampForInput } from "../../utils/constants";
 
 export default function Add(props) {
   const navigate = useNavigate();
@@ -66,17 +66,14 @@ export default function Add(props) {
     >
       <div className="">
         <div className="flex justify-between py-2 ">
+          <div className=" text-2xl font-bold py-2.5">New Tasks</div>
           <div
             className="border border-white bg-gray-100 rounded-lg w-12 h-12  flex justify-center py-2 "
             onClick={() => navigate("/")}
           >
             <Cancel />
           </div>
-          <div className="border border-white bg-gray-100 rounded-lg w-12 h-12 flex justify-center py-2 ">
-            <Search />
-          </div>
         </div>
-        <div className=" text-2xl font-bold py-2.5">New Tasks</div>
         <div className="w-full py-2">
           <div>
             <Input
@@ -107,10 +104,6 @@ export default function Add(props) {
               onChange={handleChange}
               required={true}
             />
-
-            <div className="py-3 absolute right-3 top-[40%] ">
-              <Search width="20px" height="20px" />
-            </div>
           </div>
           <div className="pt-8">
             <Input
@@ -124,18 +117,10 @@ export default function Add(props) {
             />
           </div>
         </div>
-        <div>
-          <div className="flex justify-end">
-            <Apps />
-            <div className="px-5">
-              <FontType />
-            </div>
-            <Attach />
-          </div>
-        </div>
+
         <div>
           <div>
-            <div className="text-xl font-bold py-3">Catagory</div>
+            <div className="text-xl font-bold py-8">Catagory</div>
             <div className="flex justify-between w-full gap-1 gap-y-4 flex-wrap ">
               {console.log(value, "value")}
               {categoryData.map((category, index) => (
@@ -164,15 +149,6 @@ export default function Add(props) {
             </div>
           </div>
           <div className="py-2"></div>
-        </div>
-        <div className="flex justify-between py-2">
-          <div>Get alert for this task </div>
-          <div>
-            <label class="switch">
-              <input type="checkbox" />
-              <span class="slider round w-12 h-6"></span>
-            </label>
-          </div>
         </div>
       </div>
 
